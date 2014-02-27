@@ -45,6 +45,6 @@ setup(
     package_data={__title__: ['../testing.ini',
                                  '../README.rst',
                                  '../LICENSE']},
-    install_requires=['requests>=1.2.3', 'nose', 'nose-testconfig'],
+    install_requires=['requests>=1.2.3', 'nose', 'nose-testconfig', 'requests-toolbelt'],
     entry_points={},
     test_suite='{0}.tests'.format(__title__))

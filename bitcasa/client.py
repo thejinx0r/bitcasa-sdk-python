@@ -1,5 +1,6 @@
 import json
 import urllib
+from requests_toolbelt import MultipartEncoder
 import requests
 
 from bitcasa.filesystem import BitcasaFile, BitcasaFolder
@@ -86,14 +87,11 @@ class BitcasaClient(object):
 
     def upload_file(self, f, filename, path, exists='fail'):
         url = '{0}files/{1}'.format(BASEURL, path)
-        files = {'file':(filename, f)}
-        data = {
-                'exists': exists,
-            }
+	m = MultipartEncoder( fields = {'exists': exists, 'file': (filename, f) } )
         params = {
                 'access_token': self.access_token
             }
-        response = requests.post(url, params=params, files=files, data=data)
+        response = requests.post(url, params=params,data=m, verify=False, headers={'Content-Type': m.content_type})
         result = json.loads(response.content)
         if response.status_code != 200:
             raise BitcasaException(result['error']['code'], result['error']['message'])
